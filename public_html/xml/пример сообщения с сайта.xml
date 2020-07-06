@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message >
+    <order>
+        <item>
+            <sku>G-1221</sku>
+            <price>240.0000</price>
+            <quantity>3</quantity>
+        </item>
+        <item>
+            <sku>YZZ333</sku>
+            <price>1900.0000</price>
+            <quantity>2</quantity>
+        </item>
+    </order>
+</message>

@@ -1,0 +1,139 @@
+<testdef>
+    <var name="KEY">Fo9hPlgcDeMXbKG80mVO3nWzdLZ1qQi5</var>
+    <var name="GID1">L-1112</var>
+    <var name="SKU1">1</var>
+    <var name="SKU1_START_QTY">150</var>
+    <var name="SKU1_MORE_QTY">18</var>
+    <var name="SKU1_TOTAL_QTY">168</var>
+    <var name="SKU1_END_QTY">30</var>
+    <var name="SKU1_START_PURCHASE">900</var>
+    <var name="SKU1_END_PURCHASE">999</var>
+    <var name="SKU1_START_RETAIL">1900</var>
+    <var name="SKU1_END_RETAIL">1900</var>
+    <var name="SKU1_START_SALE">1600</var>
+    <var name="SKU1_END_SALE">0</var>
+    <var name="SKU1_PAGE">shop/star-wars/</var>
+    <var name="GID2">G-1221</var>
+    <var name="SKU2">2</var>
+    <var name="SKU2_START_QTY">1</var>
+    <var name="SKU2_MORE_QTY">233</var>
+    <var name="SKU2_TOTAL_QTY">234</var>
+    <var name="SKU2_END_QTY">116</var>
+    <var name="SKU2_START_PURCHASE">90</var>
+    <var name="SKU2_END_PURCHASE">80</var>
+    <var name="SKU2_START_RETAIL">240</var>
+    <var name="SKU2_END_RETAIL">290</var>
+    <var name="SKU2_START_SALE">0</var>
+    <var name="SKU2_END_SALE">210</var>
+    <var name="SKU2_PAGE">shop/face-mask/</var>
+    <var name="GID3">YZZ333</var>
+    <var name="SHOP_URL">https://groomeru.ru/</var>
+    <var name="SKU_URL">https://rolife.ru/webasyst/webasyst/shop/?module=product&amp;id=</var>
+    <testset name="Тестирование запроса GET" method="get" url="{{SHOP_URL}}">
+        <test>
+            <query>update/?key={{KEY}}</query>
+            <result>
+                <code>405</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>405</code>
+                            <message>Ошибка запроса</message>
+                            <extended>Обращение только через POST-запрос</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Тестирование запроса POST" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>update/</query>
+            <result>
+                <code>401</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>401</code>
+                            <message>Ошибка авторизации</message>
+                            <extended>Не верное значение параметра key в запросе</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>update/?key=dL8TG63lk120qe9elekaja08h9jJJA37</query>
+            <result>
+                <code>401</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>401</code>
+                            <message>Ошибка авторизации</message>
+                            <extended>Не верное значение параметра key в запросе</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>update/?key={{KEY}}</query>
+            <result>
+                <code>406</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>406</code>
+                            <message>Не верный формат запроса</message>
+                            <extended>Тело запроса не содержит валидного xml</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message></message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Установка начальных остатков" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="21612">
+                    <instock name="main">2</instock>
+                    <price name="sale"></price>                
+                </sku>
+            </message>]]></postbody>
+        </test>
+    </testset>
+    <testset name="Реальный запрос из 1С" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>update/?key={{KEY}}</query>
+            <postbody><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<message>
+	<sku gid="02310 5">
+		<instock name="base">28</instock>
+	</sku>
+	<sku gid="02311 2">
+		<instock name="base">32</instock>
+	</sku>
+	<sku gid="02312 9">
+		<instock name="base">31</instock>
+	</sku>
+	<sku gid="10A230">
+		<instock name="base">306</instock>
+	</sku>
+</message>]]></postbody>
+        </test>
+    </testset>
+</testdef>

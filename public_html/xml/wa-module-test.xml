@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testdef>
+    <var name="KEY">dL8TG63lk120q9welekaja08h9jjJA37</var>
+    <var name="GID1">L-1112</var>
+    <var name="SKU1">1</var>
+    <var name="SKU1_START_QTY">150</var>
+    <var name="SKU1_MORE_QTY">18</var>
+    <var name="SKU1_TOTAL_QTY">168</var>
+    <var name="SKU1_END_QTY">30</var>
+    <var name="SKU1_START_PURCHASE">900</var>
+    <var name="SKU1_END_PURCHASE">999</var>
+    <var name="SKU1_START_RETAIL">1900</var>
+    <var name="SKU1_END_RETAIL">1900</var>
+    <var name="SKU1_START_SALE">1600</var>
+    <var name="SKU1_END_SALE">0</var>
+    <var name="SKU1_PAGE">shop/star-wars/</var>
+    <var name="GID2">G-1221</var>
+    <var name="SKU2">2</var>
+    <var name="SKU2_START_QTY">1</var>
+    <var name="SKU2_MORE_QTY">233</var>
+    <var name="SKU2_TOTAL_QTY">234</var>
+    <var name="SKU2_END_QTY">116</var>
+    <var name="SKU2_START_PURCHASE">90</var>
+    <var name="SKU2_END_PURCHASE">80</var>
+    <var name="SKU2_START_RETAIL">240</var>
+    <var name="SKU2_END_RETAIL">290</var>
+    <var name="SKU2_START_SALE">0</var>
+    <var name="SKU2_END_SALE">210</var>
+    <var name="SKU2_PAGE">shop/face-mask/</var>
+    <var name="GID3">YZZ333</var>
+    <var name="SHOP_URL">https://rolife.ru/webasyst/</var>
+    <var name="SKU_URL">https://rolife.ru/webasyst/webasyst/shop/?module=product&amp;id=</var>
+    <testset name="Тестирование запроса GET" method="get" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <result>
+                <code>405</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>405</code>
+                            <message>Ошибка запроса</message>
+                            <extended>Обращение только через POST-запрос</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Тестирование запроса POST" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/</query>
+            <result>
+                <code>401</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>401</code>
+                            <message>Ошибка авторизации</message>
+                            <extended>Не верное значение параметра key в запросе</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>shop/update/?key=dL8TG63lk120qe9elekaja08h9jJJA37</query>
+            <result>
+                <code>401</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>401</code>
+                            <message>Ошибка авторизации</message>
+                            <extended>Не верное значение параметра key в запросе</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <result>
+                <code>406</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>406</code>
+                            <message>Не верный формат запроса</message>
+                            <extended>Тело запроса не содержит валидного xml</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[18]]></postbody>
+            <result>
+                <code>406</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>406</code>
+                            <message>Не верный формат запроса</message>
+                            <extended>Тело запроса не содержит валидного xml</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message></message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Проверка изменения артикулов" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <gid>{{GID3}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <gid>{{GID3}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID3}}">
+                    <gid>{{GID2}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>422</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>422</code>
+                            <message>Не возможно изменить артикул. Заданный артикул уже существует.</message>
+                            <extended>Переданное значение нового артикула уже существует в базе Интернет-магазина</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID3}}">
+                    <gid>{{GID1}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Установка начальных остатков" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <instock name="main">{{SKU1_START_QTY}}</instock>
+                    <instock name="more">{{SKU1_MORE_QTY}}</instock>
+                </sku>
+            </message>]]></postbody>
+        </test>
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID2}}">
+                    <instock name="common">{{SKU2_START_QTY}}</instock>
+                    <instock name="spare">{{SKU2_MORE_QTY}}</instock>
+                </sku>
+            </message>]]></postbody>
+        </test>
+    </testset>
+    <testset name="Установка начальных цен" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <price name="purchase">{{SKU1_START_PURCHASE}}</price>
+                    <price name="retail">{{SKU1_START_RETAIL}}</price>
+                    <price name="sale">{{SKU1_START_SALE}}</price>                
+                </sku>
+                <sku gid="{{GID2}}">
+                    <price name="purchase">{{SKU2_START_PURCHASE}}</price>
+                    <price name="retail">{{SKU2_START_RETAIL}}</price>
+                    <price name="sale">{{SKU2_START_SALE}}</price>                
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Вход в админку Интернет-магазина" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>webasyst/</query>
+            <postbody><![CDATA[login=admin&password=z27ok100]]></postbody>
+            <result>
+                <code>302</code>
+                <header name="Location" set="ADMIN_URL"/>
+            </result>
+        </test>
+    </testset>
+    <testset name="Проверка количества и цен товаров в админке" method="get" url="{{SKU_URL}}">
+        <test>
+            <query>{{SKU1}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes"><![CDATA[/Доступный остаток на складе.*?Удалить этот артикул\?/us]]></content>
+                <var name="COUNT1" parse="regex" group="1"><![CDATA[/Доступный остаток на складе.*?>(\d+?)</us]]></var>
+                <var name="PURCHASE1" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Закупочная цена">/us]]></var>
+                <var name="RETAIL1" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Зачеркнутая цена">/us]]></var>
+                <var name="SALE1" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Цена">/us]]></var>
+            </result>
+        </test>
+        <test>
+            <query>{{SKU2}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes"><![CDATA[/Доступный остаток на складе.*?Удалить этот артикул\?/us]]></content>
+                <var name="COUNT2" parse="regex" group="1"><![CDATA[/Доступный остаток на складе.*?>(\d+?)</us]]></var>
+                <var name="PURCHASE2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Закупочная цена">/us]]></var>
+                <var name="SALE2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Зачеркнутая цена">/us]]></var>
+                <var name="RETAIL2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Цена">/us]]></var>
+            </result>
+        </test>
+        <test>
+            <var name="COUNT1">{{SKU1_TOTAL_QTY}}</var>
+        </test>
+        <test>
+            <var name="PURCHASE1">{{SKU1_START_PURCHASE}}</var>
+        </test>
+        <test>
+            <var name="RETAIL1">{{SKU1_START_RETAIL}}</var>
+        </test>
+        <test>
+            <var name="SALE1">{{SKU1_START_SALE}}</var>
+        </test>
+        <test>
+            <var name="COUNT2">{{SKU2_TOTAL_QTY}}</var>
+        </test>
+        <test>
+            <var name="PURCHASE2">{{SKU2_START_PURCHASE}}</var>
+        </test>
+        <test>
+            <var name="RETAIL2">{{SKU2_START_RETAIL}}</var>
+        </test>
+        <test>
+            <var name="SALE2">{{SKU2_START_SALE}}</var>
+        </test>
+    </testset>
+    <testset name="Проверка цен на сайте" method="get" url="{{SHOP_URL}}">
+        <test>
+            <query>{{SKU1_PAGE}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes">/data\-price="(\d+)"/us</content>
+                <var name="SITE_PRICE1" parse="regex" group="1">/data\-price="(\d+)"/us</var>
+            </result>
+        </test>
+        <test>
+            <query>{{SKU2_PAGE}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes">/data\-price="(\d+)"/us</content>
+                <var name="SITE_PRICE2" parse="regex" group="1">/data\-price="(\d+)"/us</var>
+            </result>
+        </test>
+        <test>
+            <var name="SITE_PRICE1">{{SKU1_START_SALE}}</var>
+        </test>
+        <test>
+            <var name="SITE_PRICE2">{{SKU2_START_RETAIL}}</var>
+        </test>
+    </testset>
+    <testset name="Комплексная проверка" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <!-- По первому товару обновим только SALE в пусто - должен встать корректный ритейл -->
+            <!-- По первому товару обновим только SALE в новое значение - должна встать корректная зачеркнутая (бывший ритейл) -->
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <gid>{{GID3}}</gid>
+                    <price name="purchase">{{SKU1_END_PURCHASE}}</price>
+                    <price name="sale">{{SKU1_END_SALE}}</price>                
+                    <instock>{{SKU1_END_QTY}}</instock>
+                </sku>
+                <sku gid="{{GID2}}">
+                    <instock name="noname">{{SKU2_END_QTY}}</instock>
+                    <price name="purchase">{{SKU2_END_PURCHASE}}</price>
+                    <price name="sale">{{SKU2_END_SALE}}</price>                
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Проверка количества и цен товаров в админке" method="get" url="{{SKU_URL}}">
+        <test>
+            <query>{{SKU1}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes"><![CDATA[/Доступный остаток на складе.*?Удалить этот артикул\?/us]]></content>
+                <var name="COUNT1" parse="regex" group="1"><![CDATA[/Доступный остаток на складе.*?>(\d+?)</us]]></var>
+                <var name="PURCHASE1" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Закупочная цена">/us]]></var>
+                <var name="SALE1" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Зачеркнутая цена">/us]]></var>
+                <var name="RETAIL1" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Цена">/us]]></var>
+            </result>
+        </test>
+        <test>
+            <query>{{SKU2}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes"><![CDATA[/Доступный остаток на складе.*?Удалить этот артикул\?/us]]></content>
+                <var name="COUNT2" parse="regex" group="1"><![CDATA[/Доступный остаток на складе.*?>(\d+?)</us]]></var>
+                <var name="PURCHASE2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Закупочная цена">/us]]></var>
+                <var name="RETAIL2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Зачеркнутая цена">/us]]></var>
+                <var name="SALE2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Цена">/us]]></var>
+            </result>
+        </test>
+        <test>
+            <var name="COUNT1">{{SKU1_END_QTY}}</var>
+        </test>
+        <test>
+            <var name="PURCHASE1">{{SKU1_END_PURCHASE}}</var>
+        </test>
+        <test>
+            <var name="RETAIL1">{{SKU1_END_RETAIL}}</var>
+        </test>
+        <test>
+            <var name="SALE1">{{SKU1_END_SALE}}</var>
+        </test>
+        <test>
+            <var name="COUNT2">{{SKU2_END_QTY}}</var>
+        </test>
+        <test>
+            <var name="PURCHASE2">{{SKU2_END_PURCHASE}}</var>
+        </test>
+        <test>
+            <var name="RETAIL2">{{SKU2_START_RETAIL}}</var>
+        </test>
+        <test>
+            <var name="SALE2">{{SKU2_END_SALE}}</var>
+        </test>
+    </testset>
+    <testset name="Проверка окончания сейла" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <!-- По первому товару обновим только SALE в пусто - должен встать корректный ритейл -->
+            <!-- По первому товару обновим только SALE в новое значение - должна встать корректная зачеркнутая (бывший ритейл) -->
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID2}}">
+                    <price name="sale"></price>                
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Проверка цены по окончании сейла" method="get" url="{{SKU_URL}}">
+        <test>
+            <query>{{SKU2}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes"><![CDATA[/Доступный остаток на складе.*?Удалить этот артикул\?/us]]></content>
+                <var name="RETAIL2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Зачеркнутая цена">/us]]></var>
+                <var name="SALE2" parse="regex" group="1"><![CDATA[/value="(\d+)"[^>]*?title="Цена">/us]]></var>
+            </result>
+        </test>
+        <test>
+            <var name="RETAIL2">0</var>
+        </test>
+        <test>
+            <var name="SALE2">{{SKU2_START_RETAIL}}</var>
+        </test>
+    </testset>
+    <testset name="Реальный запрос из 1С" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>shop/update/?key={{KEY}}</query>
+            <!-- По первому товару обновим только SALE в пусто - должен встать корректный ритейл -->
+            <!-- По первому товару обновим только SALE в новое значение - должна встать корректная зачеркнутая (бывший ритейл) -->
+            <postbody><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<message>
+	<sku gid="1586-0051">
+		<instock name="base">42</instock>
+	</sku>
+	<sku gid="1871-0082">
+		<instock name="base">0</instock>
+	</sku>
+	<sku gid="1871-0081">
+		<instock name="base">27</instock>
+	</sku>
+	<sku gid="56STE002">
+		<instock name="base">81</instock>
+	</sku>
+	<sku gid="02241 2">
+		<instock name="base">26</instock>
+	</sku>
+	<sku gid="02322 8">
+		<instock name="base">5</instock>
+	</sku>
+	<sku gid="2376-516 (1247-7680)">
+		<instock name="base">11</instock>
+	</sku>
+	<sku gid="1592-0475">
+		<instock name="base">7</instock>
+	</sku>
+	<sku gid="1245-7931">
+		<instock name="base">12</instock>
+	</sku>
+	<sku gid="1401-7600">
+		<instock name="base">10</instock>
+	</sku>
+	<sku gid="1854-7505">
+		<instock name="base">38</instock>
+	</sku>
+	<sku gid="1233-7050">
+		<instock name="base">5</instock>
+	</sku>
+	<sku gid="25STE008">
+		<instock name="base">49</instock>
+	</sku>
+	<sku gid="03300 5">
+		<instock name="base">4</instock>
+	</sku>
+	<sku gid="03301 2">
+		<instock name="base">86</instock>
+	</sku>
+	<sku gid="8843-216 (4212-0471)">
+		<instock name="base">43</instock>
+	</sku>
+	<sku gid="03230 5">
+		<instock name="base">41</instock>
+	</sku>
+	<sku gid="1030-0460">
+		<instock name="base">0</instock>
+	</sku>
+	<sku gid="41STP004">
+		<instock name="base">23</instock>
+	</sku>
+	<sku gid="1584-0053">
+		<instock name="base">9</instock>
+	</sku>
+	<sku gid="1884-0055">
+		<instock name="base">8</instock>
+	</sku>
+	<sku gid="25STE025">
+		<instock name="base">93</instock>
+	</sku>
+	<sku gid="1400-0269">
+		<instock name="base">1</instock>
+	</sku>
+	<sku gid="5640-326 (3214-0471)">
+		<instock name="base">11</instock>
+	</sku>
+	<sku gid="P244">
+		<instock name="base">0</instock>
+	</sku>
+	<sku gid="8841-1516 (4216-0472)">
+		<instock name="base">0</instock>
+	</sku>
+	<sku gid="02570 3">
+		<instock name="base">8</instock>
+	</sku>
+	<sku gid="25STE014">
+		<instock name="base">219</instock>
+	</sku>
+	<sku gid="02811 7">
+		<instock name="base">0</instock>
+	</sku>
+	<sku gid="1886-0051">
+		<instock name="base">38</instock>
+	</sku>
+	<sku gid="02202 3">
+		<instock name="base">34</instock>
+	</sku>
+</message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+</testdef>

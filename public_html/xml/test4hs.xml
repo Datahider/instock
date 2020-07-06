@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testdef>
+    <var name="URL">https://web1c.losthost.online/id41/hs/instock/order</var>
+    <var name="KEY">233</var>
+    <testset name="Проверка соединения" method="post" url="{{URL}}">
+        <test>
+            <query>?key={{KEY}}</query>
+            <postbody><![CDATA[<message xmlns="http://losthost.online/plugin/instock">
+                <order>
+                    <item>
+                        <sku>112233</sku>
+                        <price>155</price>
+                        <quantity>2</quantity>
+                    </item>
+                </order>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content>123</content>
+            </result>
+        </test>
+    </testset>
+</testdef>

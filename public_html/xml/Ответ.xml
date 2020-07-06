@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <ok/>
+    <!-- в ответе сервера должно быть либо <ok/> либо <error> -->
+    <error>
+        <code>NNN</code>
+        <message>Сообщение об ошибке (может быть выведено пользователю)</message>
+        <extended>
+            Может содержать расширенную информацию об ошибке для разработчика
+        </extended>
+    </error>
+</response>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testdef>
+    <var name="KEY">b5bea428efd1e15bb76aa2e55ca45ea8</var>
+    <var name="GID1">2999-7900</var> <!-- Охлаждающий спрей Wahl 4 в 1 -->
+    <testset name="Проверка изменения остатка" method="post" url="https://stekprofi.ru/">
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <instock name="base">10</instock>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+            </result>
+        </test>
+    </testset>
+</testdef>
+
+
+
+<testdef>
+    <var name="KEY">ad16d81129ce28667259c7280276bcac</var>
+    <var name="GID1">177-79-05</var> <!-- Штаны Цветочная Поляна, Фиолетовый, XS -->
+    <var name="SKU1">1</var>
+    <var name="SKU1_START_QTY">150</var>
+    <var name="SKU1_MORE_QTY">18</var>
+    <var name="SKU1_TOTAL_QTY">168</var>
+    <var name="SKU1_END_QTY">30</var>
+    <var name="SKU1_START_PURCHASE">900</var>
+    <var name="SKU1_END_PURCHASE">999</var>
+    <var name="SKU1_START_RETAIL">1900</var>
+    <var name="SKU1_END_RETAIL">1900</var>
+    <var name="SKU1_START_SALE">1600</var>
+    <var name="SKU1_END_SALE">0</var>
+    <var name="SKU1_PAGE">shop/catalog/pants/pants-flower-glade/</var>
+    <var name="GID2">177-79-07</var> <!-- Штаны Цветочная Поляна, Фиолетовый, S -->
+    <var name="SKU2">2</var>
+    <var name="SKU2_START_QTY">1</var>
+    <var name="SKU2_MORE_QTY">233</var>
+    <var name="SKU2_TOTAL_QTY">234</var>
+    <var name="SKU2_END_QTY">116</var>
+    <var name="SKU2_START_PURCHASE">90</var>
+    <var name="SKU2_END_PURCHASE">80</var>
+    <var name="SKU2_START_RETAIL">240</var>
+    <var name="SKU2_END_RETAIL">290</var>
+    <var name="SKU2_START_SALE">0</var>
+    <var name="SKU2_END_SALE">210</var>
+    <var name="SKU2_PAGE">shop/catalog/pants/pants-flower-glade/</var>
+    <var name="GID3">177-79-88</var>
+    <var name="SHOP_URL">http://u20026btrx21550.pyramis.cameta.in.net/</var>
+    <var name="SKU_URL">https://rolife.ru/webasyst/webasyst/shop/?module=product&amp;id=</var>
+    <testset name="Тестирование запроса GET" method="get" url="{{SHOP_URL}}">
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <result>
+                <code>405</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>405</code>
+                            <message>Ошибка запроса</message>
+                            <extended>Обращение только через POST-запрос</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Тестирование запроса POST" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>instock.php</query>
+            <result>
+                <code>401</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>401</code>
+                            <message>Ошибка авторизации</message>
+                            <extended>Не верное значение параметра key в запросе</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>instock.php?key=dL8TG63lk120qe9elekaja08h9jJJA37</query>
+            <result>
+                <code>401</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>401</code>
+                            <message>Ошибка авторизации</message>
+                            <extended>Не верное значение параметра key в запросе</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <result>
+                <code>406</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>406</code>
+                            <message>Не верный формат запроса</message>
+                            <extended>Тело запроса не содержит валидного xml</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message></message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <testset name="Проверка изменения артикулов" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <gid>{{GID3}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <gid>{{GID3}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID3}}">
+                    <gid>{{GID2}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>422</code>
+                <content format="xml">
+                    <response>
+                        <error>
+                            <code>422</code>
+                            <message>Не возможно изменить артикул. Заданный артикул уже существует.</message>
+                            <extended>Переданное значение нового артикула уже существует в базе Интернет-магазина</extended>
+                        </error>
+                    </response>
+                </content>
+            </result>
+        </test>
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID3}}">
+                    <gid>{{GID1}}</gid>
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+ 	<testset name="Установка начальных остатков" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <instock name="main">{{SKU1_START_QTY}}</instock>
+                    <instock name="more">{{SKU1_MORE_QTY}}</instock>
+                </sku>
+            </message>]]></postbody>
+        </test>
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID2}}">
+                    <instock name="common">{{SKU2_START_QTY}}</instock>
+                    <instock name="spare">{{SKU2_MORE_QTY}}</instock>
+                </sku>
+            </message>]]></postbody>
+        </test>
+    </testset>
+    <testset name="Установка начальных цен" method="post" url="{{SHOP_URL}}">
+        <test>
+            <query>instock.php?key={{KEY}}</query>
+            <postbody><![CDATA[<message>
+                <sku gid="{{GID1}}">
+                    <price name="purchase">{{SKU1_START_PURCHASE}}</price>
+                    <price name="retail">{{SKU1_START_RETAIL}}</price>
+                    <price name="sale">{{SKU1_START_SALE}}</price>                
+                </sku>
+                <sku gid="{{GID2}}">
+                    <price name="purchase">{{SKU2_START_PURCHASE}}</price>
+                    <price name="retail">{{SKU2_START_RETAIL}}</price>
+                    <price name="sale">{{SKU2_START_SALE}}</price>                
+                </sku>
+            </message>]]></postbody>
+            <result>
+                <code>200</code>
+                <content format="xml">
+                    <response>
+                        <ok/>
+                    </response>
+                </content>
+            </result>
+        </test>
+    </testset>
+    <!-- Попрввить регулярку в исходном коде страницы есть значения нужные.
+    <testset name="Проверка цен на сайте" method="get" url="{{SHOP_URL}}">
+        <test>
+            <query>{{SKU1_PAGE}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes">/{{GID1}}.*'RATIO_PRICE':'(\d+)','PRINT_RATIO_PRICE'/us</content>
+                <var name="SITE_PRICE1" parse="regex" group="1">/{{GID1}}.*'RATIO_PRICE':'(\d+)','PRINT_RATIO_PRICE'/us</var>
+            </result>
+        </test>
+        <test>
+            <query>{{SKU2_PAGE}}</query>
+            <result>
+                <code>200</code>
+                <content regex="yes">/{{GID2}}.*'RATIO_PRICE':'(\d+)','PRINT_RATIO_PRICE'/us</content>
+                <var name="SITE_PRICE2" parse="regex" group="1">/{{GID2}}.*'RATIO_PRICE':'(\d+)','PRINT_RATIO_PRICE'/us</var>
+            </result>
+        </test>
+        <test>
+            <var name="SITE_PRICE1">{{SKU1_START_SALE}}</var>
+        </test>
+        <test>
+            <var name="SITE_PRICE2">{{SKU2_START_RETAIL}}</var>
+        </test>
+    </testset> -->
+</testdef>
